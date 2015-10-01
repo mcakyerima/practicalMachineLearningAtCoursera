@@ -58,8 +58,13 @@ Answer  | Options
  V | 9%
 
 1/1000 of visits to a website => 100 clicks in 100,000 visits.
+
 TP + FN = 100
+
 Sensitivity = 0.99 = TP/(TP+FN) = 99/(99+1)
+
 TN + FP = 100,000-100 = 99,900
+
 Specificity = 0.99 = TN/(TN+FP) = 98,901/(98901+999)
+
 TP/(TP+FP) = 99/(99+999) = 9%

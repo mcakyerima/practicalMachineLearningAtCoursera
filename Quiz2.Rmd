@@ -1,0 +1,142 @@
+---
+title: "Quiz2"
+author: "Yao-Jen Kuo"
+date: "Thursday, October 01, 2015"
+output:
+  html_document:
+    theme: united
+    toc: true
+    highlight: tango
+    fig_width: 9
+    fig_height: 5
+    fig_caption: false
+---
+
+# Practical MachineLearning At Coursera
+
+## Quiz 2
+
+For this quiz we will be using several R packages. R package versions change over time, the right answers have been checked using the following versions of the packages. 
+
+AppliedPredictiveModeling: v1.1.6 
+caret: v6.0.47 
+
+If you aren't using these versions of the packages, your answers may not exactly match the right answer, but hopefully should be close.
+
+### Question 1
+
+Load the Alzheimer's disease data using the commands:
+
+```{r, message=F, warning=F}
+library(AppliedPredictiveModeling)
+library(caret)
+data(AlzheimerDisease)
+```
+
+Which of the following commands will create training and test sets with about 50% of the observations assigned to each?
+
+Answer: Using createDataPartition() function in caret package as below:
+
+```{r}
+adData <- data.frame(diagnosis,predictors)
+trainIndex <- createDataPartition(diagnosis, p = 0.50,list=FALSE)
+training <- adData[trainIndex,]
+testing <- adData[-trainIndex,]
+```
+
+### Question 2
+
+Load the cement data using the commands:
+
+```{r}
+library(AppliedPredictiveModeling)
+data(concrete)
+library(caret)
+set.seed(1000)
+inTrain = createDataPartition(mixtures$CompressiveStrength, p = 3/4)[[1]]
+training = mixtures[ inTrain,]
+testing = mixtures[-inTrain,]
+```
+
+Make a histogram and confirm the SuperPlasticizer variable is skewed. Normally you might use the log transform to try to make the data more symmetric. Why would that be a poor choice for this variable?
+
+Answer: 
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+ggplot(data=training, aes(x=Superplasticizer)) + geom_histogram()
+```
+
+There will still be a large amount of values are the same after log transformation, hence not gonna make the data symmetric.
+There are values of zero so when you take the log() transform those values will be -Inf.
+
+### Question 3
+
+Load the Alzheimer's disease data using the commands:
+
+```{r}
+library(caret)
+library(AppliedPredictiveModeling)
+set.seed(3433)
+data(AlzheimerDisease)
+adData = data.frame(diagnosis,predictors)
+inTrain = createDataPartition(adData$diagnosis, p = 3/4)[[1]]
+training = adData[ inTrain,]
+testing = adData[-inTrain,]
+```
+
+Find all the predictor variables in the training set that begin with IL. Perform principal components on these variables with the preProcess() function from the caret package. Calculate the number of principal components needed to capture 90% of the variance. How many are there?
+
+Answer:
+
+```{r}
+namesTraining <- names(training)
+predictorsIL <- grep('^IL', namesTraining)
+predictorsILTrain <- training[,predictorsIL]
+pca <- preProcess(predictorsILTrain, method='pca', thresh=0.9)
+ncol(pca$rotation)
+```
+
+There are 9 principal components.
+
+### Question 4
+
+Load the Alzheimer's disease data using the commands:
+
+```{r}
+library(caret)
+library(AppliedPredictiveModeling)
+set.seed(3433)
+data(AlzheimerDisease)
+adData = data.frame(diagnosis,predictors)
+inTrain = createDataPartition(adData$diagnosis, p = 3/4)[[1]]
+training = adData[ inTrain,]
+testing = adData[-inTrain,]
+```
+
+Create a training data set consisting of only the predictors with variable names beginning with IL and the diagnosis. Build two predictive models, one using the predictors as they are and one using PCA with principal components explaining 80% of the variance in the predictors. Use method="glm" in the train function. What is the accuracy of each method in the test set? Which is more accurate?
+
+Answer:
+
+```{r}
+namesTraining <- names(training)
+predictorsIL <- grep('^IL', namesTraining)
+predictorsILTrain <- training[,predictorsIL]
+dataframeTrain <- data.frame(training$diagnosis, predictorsILTrain)
+glmFit <- train(training.diagnosis ~ ., method="glm", data=dataframeTrain)
+glmPredictions <- predict(glmFit, newdata=testing)
+confusionMatrix(glmPredictions, testing$diagnosis)
+```
+
+The accuracy without PCA is 0.6463.
+
+```{r}
+pcaFit <- train(training.diagnosis ~ ., 
+                  method="glm", 
+                  preProcess="pca", 
+                  data=dataframeTrain, trControl=trainControl(preProcOptions=list(thresh=0.8)))
+pcaPredictions <- predict(pcaFit, newdata=testing)
+confusionMatrix(pcaPredictions, testing$diagnosis)
+```
+
+The accuracy with PCA is 0.7195 and it is more accurate than the one without PCA.
