@@ -139,4 +139,4 @@ pcaPredictions <- predict(pcaFit, newdata=testing)
 confusionMatrix(pcaPredictions, testing$diagnosis)
 ```
 
-The accuracy with PCA is 0.7195 and it is more accurate than the one without PCA.
+The accuracy with PCA is 0.7195 and is more accurate than the one without PCA.
