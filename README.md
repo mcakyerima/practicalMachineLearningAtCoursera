@@ -9,7 +9,10 @@
   - pml.html: The assignment.
   - Quiz1.md: Answers for Quiz1.
   - Quiz2.Rmd: Answers for Quiz2.
+  - Quiz2.html: Quiz2 report.
   - Quiz3.Rmd: Answers for Quiz3.
+  - Quiz3.html: Quiz3 report.
   - Quiz4.Rmd: Answers for Quiz4.
+  - Quiz4.html: Quiz4 report.
 
-&copy;Yao-Jen Kuo
+&copy; Yao-Jen Kuo
