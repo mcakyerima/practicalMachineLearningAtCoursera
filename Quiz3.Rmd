@@ -36,7 +36,7 @@ data(segmentationOriginal)
 library(caret)
 ```
 
-1. Subset the data to a training set and testing set based on the Case variable in the data set. 
+* Subset the data to a training set and testing set based on the Case variable in the data set. 
 
 ```{r}
 indexTrain <- segmentationOriginal$Case == "Train"
@@ -44,14 +44,14 @@ train <- segmentationOriginal[indexTrain, ]
 test <- segmentationOriginal[-indexTrain, ]
 ```
 
-2. Set the seed to 125 and fit a CART model with the rpart method using all predictor variables and default caret settings.
+* Set the seed to 125 and fit a CART model with the rpart method using all predictor variables and default caret settings.
 
 ```{r}
 set.seed(125)
 cartModel <- train(Class ~ ., data=train, method="rpart")
 ```
 
-3. In the final model what would be the final model prediction for cases with the following variable values:
+* In the final model what would be the final model prediction for cases with the following variable values:
 
 ```{r}
 cartModel$finalModel

@@ -96,21 +96,21 @@ code > span.er { font-weight: bold; }
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(AppliedPredictiveModeling)
 <span class="kw">data</span>(segmentationOriginal)
 <span class="kw">library</span>(caret)</code></pre>
-<ol style="list-style-type: decimal">
+<ul>
 <li>Subset the data to a training set and testing set based on the Case variable in the data set.</li>
-</ol>
+</ul>
 <pre class="sourceCode r"><code class="sourceCode r">indexTrain &lt;-<span class="st"> </span>segmentationOriginal$Case ==<span class="st"> &quot;Train&quot;</span>
 train &lt;-<span class="st"> </span>segmentationOriginal[indexTrain, ]
 test &lt;-<span class="st"> </span>segmentationOriginal[-indexTrain, ]</code></pre>
-<ol start="2" style="list-style-type: decimal">
+<ul>
 <li>Set the seed to 125 and fit a CART model with the rpart method using all predictor variables and default caret settings.</li>
-</ol>
+</ul>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">125</span>)
 cartModel &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data=</span>train, <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>)</code></pre>
 <pre><code>## Loading required package: rpart</code></pre>
-<ol start="3" style="list-style-type: decimal">
+<ul>
 <li>In the final model what would be the final model prediction for cases with the following variable values:</li>
-</ol>
+</ul>
 <pre class="sourceCode r"><code class="sourceCode r">cartModel$finalModel</code></pre>
 <pre><code>## n= 1009 
 ## 
